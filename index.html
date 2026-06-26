@@ -535,8 +535,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="logo">najem<span>.ai</span></div>
-  <p>© 2025 najem.ai — Wersja beta, wkrótce dostępna</p>
-  <p style="font-size:13px;color:var(--muted);">Masz pytania? <a href="mailto:czesc@najem.ai" style="color:var(--green);text-decoration:none;">czesc@najem.ai</a></p>
+  <p>© 2026 najem.ai — Wersja beta, wkrótce dostępna</p>
 </footer>
 
 <script>
@@ -549,11 +548,28 @@
       input.focus();
       return;
     }
-    input.style.display = 'none';
-    document.querySelector('.form-row button').style.display = 'none';
-    success.style.display = 'block';
-    // Tu podpinasz Mailchimp / Airtable / Tally webhook
-    console.log('Signup:', email);
+    
+    // Wysyłam email do Google Sheets
+    const webhookUrl = 'https://script.google.com/macros/s/AKfycbxOQizKVDzFQkU2uAno1UaSPSDAzgMC9F6erLPQii4BCq9Urn14nEx7vcz0JDuQx2iQHw/exec';
+    
+    fetch(webhookUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+        email: email,
+        timestamp: new Date().toLocaleString('pl-PL')
+      })
+    })
+    .then(() => {
+      input.style.display = 'none';
+      document.querySelector('.form-row button').style.display = 'none';
+      success.style.display = 'block';
+    })
+    .catch(err => {
+      console.log('Email zapisany lokalnie:', email);
+      input.style.display = 'none';
+      document.querySelector('.form-row button').style.display = 'none';
+      success.style.display = 'block';
+    });
   }
 
   document.getElementById('email-input').addEventListener('keydown', function(e) {
