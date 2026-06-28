@@ -353,10 +353,11 @@ function handleSignup() {
   btn.disabled = true;
   btn.textContent = 'Wysyłanie...';
 
+  // Send as form-urlencoded to avoid CORS preflight (Apps Script accepts form posts)
   fetch(webhookUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: email, timestamp: new Date().toISOString() })
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ email: email, timestamp: new Date().toISOString() }).toString()
   })
   .then(res => {
     if (res.ok) {
