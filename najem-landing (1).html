@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>najem.ai — Dowiedz się kto chce wynająć Twoje mieszkanie</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:  #1B3A5C;
+  --navy2: #2D5480;
+  --gold:  #C9952A;
+  --cream: #FAFAF7;
+  --beige: #F0EDE6;
+  --border:#E2DDD6;
+  --muted: #6B6B6B;
+  --text:  #1A1A1A;
+  --white: #FFFFFF;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 56px;
+  background: rgba(250,250,247,0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700; color: var(--navy);
+}
+.logo span { color: var(--gold); }
+.nav-cta {
+  background: var(--navy); color: var(--white);
+  padding: 10px 24px; border-radius: 8px;
+  font-weight: 700; font-size: 14px;
+  text-decoration: none; transition: background .2s;
+}
+.nav-cta:hover { background: var(--navy2); }
+
+/* HERO */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  padding-top: 57px;
+}
+.hero-text {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 56px 80px 56px;
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 4vw, 58px);
+  font-weight: 800; line-height: 1.1;
+  color: var(--navy); letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-size: 17px; color: var(--muted);
+  line-height: 1.75; margin-bottom: 40px;
+  max-width: 420px;
+}
+.hero-sub strong { color: var(--text); font-weight: 600; }
+.btn-primary {
+  display: inline-block;
+  background: var(--navy); color: var(--white);
+  padding: 15px 32px; border-radius: 10px;
+  font-weight: 700; font-size: 15px;
+  text-decoration: none; transition: background .2s, transform .15s;
+  align-self: flex-start;
+}
+.btn-primary:hover { background: var(--navy2); transform: translateY(-1px); }
+.hero-note { margin-top: 14px; font-size: 13px; color: var(--muted); }
+.hero-image { position: relative; overflow: hidden; }
+.hero-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+/* SCHEMAT */
+.how {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 80vh;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+}
+.how-image { position: relative; overflow: hidden; background: var(--beige); }
+.how-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.how-content {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 64px 80px 56px;
+}
+.how-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 18px;
+}
+.how h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 2.8vw, 38px);
+  font-weight: 700; color: var(--navy);
+  line-height: 1.2; letter-spacing: -0.5px;
+  margin-bottom: 40px;
+}
+
+/* FLOW STEPS */
+.flow { display: flex; flex-direction: column; gap: 0; }
+.flow-step {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.flow-step:last-child { border-bottom: none; }
+.flow-left { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.flow-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--navy); color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.flow-line {
+  width: 2px; flex: 1; min-height: 24px;
+  background: var(--border); margin-top: 6px;
+}
+.flow-step:last-child .flow-line { display: none; }
+.flow-body { padding-top: 6px; padding-bottom: 16px; }
+.flow-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.flow-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.flow-tag {
+  display: inline-block; margin-top: 8px;
+  background: var(--beige); border: 1px solid var(--border);
+  border-radius: 100px; padding: 3px 10px;
+  font-size: 11px; font-weight: 600; color: var(--navy);
+}
+.flow-tag.gold { background: rgba(201,149,42,0.1); border-color: rgba(201,149,42,0.25); color: var(--gold); }
+
+/* WAITLIST */
+.waitlist {
+  background: var(--navy);
+  padding: 96px 56px;
+  text-align: center;
+}
+.waitlist-inner { max-width: 480px; margin: 0 auto; }
+.waitlist h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 3.5vw, 46px);
+  font-weight: 700; color: var(--white);
+  letter-spacing: -0.5px; margin-bottom: 14px; line-height: 1.15;
+}
+.waitlist h2 em { font-style: italic; color: #F5C842; }
+.waitlist-sub {
+  font-size: 16px; color: rgba(255,255,255,0.6);
+  margin-bottom: 36px; line-height: 1.65;
+}
+.form-wrap {
+  display: flex; gap: 8px;
+  max-width: 420px; margin: 0 auto;
+}
+.form-wrap input {
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: var(--white); font-family: 'Inter', sans-serif;
+  padding: 14px 18px; border-radius: 10px; font-size: 14px;
+  outline: none; transition: border-color .2s;
+}
+.form-wrap input::placeholder { color: rgba(255,255,255,0.35); }
+.form-wrap input:focus { border-color: rgba(255,255,255,0.5); }
+.btn-submit {
+  background: var(--gold); color: var(--white);
+  border: none; padding: 14px 24px; border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700; font-size: 14px; cursor: pointer;
+  white-space: nowrap; transition: background .2s;
+}
+.btn-submit:hover { background: #b5831f; }
+.form-note { margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.3); }
+.success-msg { display: none; color: #6fdb9e; font-weight: 700; font-size: 17px; margin-top: 16px; }
+
+/* FOOTER */
+footer {
+  background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 24px 56px;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 12px;
+}
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--white); }
+.footer-logo span { color: var(--gold); }
+footer p { font-size: 12px; color: rgba(255,255,255,0.3); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { color: rgba(255,255,255,0.4); font-size: 12px; text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--white); }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .hero, .how { grid-template-columns: 1fr; }
+  .hero-image { height: 260px; }
+  .how-image { height: 240px; order: -1; }
+  .hero-text, .how-content { padding: 48px 20px; }
+  .waitlist { padding: 64px 20px; }
+  .form-wrap { flex-direction: column; }
+  footer { padding: 20px; flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">najem<span>.ai</span></div>
+  <a href="#zapisz" class="nav-cta">Zapisz się →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Dla właścicieli mieszkań</div>
+    <h1>Miej kontrolę nad tym,<br>kto wynajmuje<br><em>Twoje mieszkanie.</em></h1>
+    <p class="hero-sub">
+      <strong>Nie wiesz kto wchodzi do Twojego domu</strong> — i tracisz czas na miliony telefonów od przypadkowych osób. Czas to zmienić.
+    </p>
+    <a href="#zapisz" class="btn-primary">Chcę wypróbować →</a>
+    <p class="hero-note">Bezpłatny wczesny dostęp · Beta wkrótce</p>
+  </div>
+  <div class="hero-image">
+    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900&q=85" alt="Bezpieczny wynajem mieszkania" />
+  </div>
+</section>
+
+<!-- SCHEMAT -->
+<section class="how" id="jak-dziala">
+  <div class="how-image">
+    <img src="https://images.unsplash.com/photo-1554774853-aae0a22c8aa4?w=900&q=85" alt="Właściciel przegląda kandydatów" />
+  </div>
+  <div class="how-content">
+    <div class="how-eyebrow">Jak to działa</div>
+    <h2>Zbierz CV, zadzwoń tylko do kogo chcesz.</h2>
+
+    <div class="flow">
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">1</div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-title">Tworzysz swoje miejsce na CV</div>
+          <div class="flow-desc">Zakładasz konto i konfigurujesz ogłoszenie — tytuł, zdjęcia, warunki. Gotowe w kilka minut.</div>
+          <span class="flow-tag">Twoje działanie</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">2</div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-title">Udostępniasz ogłoszenie na OtoDom</div>
+          <div class="flow-desc">Do ogłoszenia dołączasz link do aplikowania. Kandydaci zamiast dzwonić — wysyłają swoje CV przez platformę.</div>
+          <span class="flow-tag gold">Razem z linkiem do aplikowania</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">3</div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-title">Zbierasz CV przez tydzień</div>
+          <div class="flow-desc">Przeglądasz profile kandydatów w swoim tempie. Widzisz kim są, zanim odbierzesz jakikolwiek telefon.</div>
+          <span class="flow-tag">Bez presji, bez chaosu</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-left">
+          <div class="flow-num">4</div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-title">Dzwonisz tylko do tego, kogo chcesz</div>
+          <div class="flow-desc">Wybierasz jedną osobę — tę która Ci odpowiada. Reszta kandydatów dostaje automatyczną informację zwrotną.</div>
+          <span class="flow-tag gold">Twoja decyzja, Twój wybór</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="zapisz">
+  <div class="waitlist-inner">
+    <h2>Miej wpływ na to,<br>komu <em>wynajmujesz.</em></h2>
+    <p class="waitlist-sub">
+      Zapisz się i dostań dostęp jako pierwszy.<br>Twoja opinia kształtuje produkt.
+    </p>
+    <div class="form-wrap">
+      <input type="email" id="email-input" placeholder="twój@email.pl" />
+      <button class="btn-submit" onclick="handleSignup()">Zapisuję się</button>
+    </div>
+    <div class="success-msg" id="success-msg">✓ Gotowe — odezwiemy się wkrótce!</div>
+    <p class="form-note">Żadnego spamu. Wypisujesz się jednym kliknięciem.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">najem<span>.ai</span></div>
+  <p>© 2025 najem.ai · kontakt@najem.ai</p>
+  <div class="footer-links">
+    <a href="#">Polityka prywatności</a>
+    <a href="#">Regulamin</a>
+    <a href="mailto:kontakt@najem.ai">Kontakt</a>
+  </div>
+</footer>
+
+<script>
+  function handleSignup() {
+    const input = document.getElementById('email-input');
+    const success = document.getElementById('success-msg');
+    if (!input.value.trim() || !input.value.includes('@')) {
+      input.style.borderColor = '#e05555'; input.focus(); return;
+    }
+    input.style.display = 'none';
+    document.querySelector('.btn-submit').style.display = 'none';
+    success.style.display = 'block';
+  }
+  document.getElementById('email-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleSignup();
+  });
+</script>
+</body>
+</html>
