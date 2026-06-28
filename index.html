@@ -335,6 +335,8 @@ footer p { font-size: 12px; color: rgba(255,255,255,0.3); }
   </div>
 </footer>
 
+<iframe id="hidden_iframe" name="hidden_iframe" style="display:none"></iframe>
+
 <script>
 const webhookUrl = 'https://script.google.com/macros/s/AKfycbxOQizKVDzFQkU2uAno1UaSPSDAzgMC9F6erLPQii4BCq9Urn14nEx7vcz0JDuQx2iQHw/exec';
 
@@ -353,34 +355,70 @@ function handleSignup() {
   btn.disabled = true;
   btn.textContent = 'Wysyłanie...';
 
-  // Send as form-urlencoded to avoid CORS preflight (Apps Script accepts form posts)
-  fetch(webhookUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ email: email, timestamp: new Date().toISOString() }).toString()
-  })
-  .then(res => {
-    if (res.ok) {
-      input.style.display = 'none';
-      btn.style.display = 'none';
-      success.style.display = 'block';
-    } else {
-      throw new Error('Server response ' + res.status);
-    }
-  })
-  .catch(err => {
-    console.error('Signup failed, saving locally:', err);
-    // Fallback: save to localStorage so emails are not lost
+  // Submit via a hidden form targeted at an invisible iframe to avoid navigation/CORS issues
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = webhookUrl;
+  form.target = 'hidden_iframe';
+  form.style.display = 'none';
+
+  const inputEmail = document.createElement('input');
+  inputEmail.type = 'hidden';
+  inputEmail.name = 'email';
+  inputEmail.value = email;
+  form.appendChild(inputEmail);
+
+  const inputTs = document.createElement('input');
+  inputTs.type = 'hidden';
+  inputTs.name = 'timestamp';
+  inputTs.value = new Date().toISOString();
+  form.appendChild(inputTs);
+
+  document.body.appendChild(form);
+
+  const iframe = document.getElementById('hidden_iframe');
+  let responded = false;
+
+  function showSuccess() {
+    input.style.display = 'none';
+    btn.style.display = 'none';
+    success.style.display = 'block';
+  }
+
+  function cleanup() {
+    try { document.body.removeChild(form); } catch (e) {}
+    btn.disabled = false;
+    btn.textContent = 'Zapisuję się';
+  }
+
+  function saveLocally() {
     try {
       const pending = JSON.parse(localStorage.getItem('naiem_pending_emails') || '[]');
       pending.push({ email, ts: new Date().toISOString() });
       localStorage.setItem('naiem_pending_emails', JSON.stringify(pending));
     } catch (e) { /* ignore */ }
+  }
 
-    input.style.display = 'none';
-    btn.style.display = 'none';
-    success.style.display = 'block';
-  });
+  function onIframeLoad() {
+    responded = true;
+    showSuccess();
+    setTimeout(cleanup, 2000);
+    iframe.removeEventListener('load', onIframeLoad);
+  }
+
+  iframe.addEventListener('load', onIframeLoad);
+  form.submit();
+
+  // Fallback: if no response within 5s, save locally and show success
+  setTimeout(() => {
+    if (!responded) {
+      console.warn('No response from Apps Script; saving locally');
+      saveLocally();
+      showSuccess();
+      setTimeout(cleanup, 2000);
+      iframe.removeEventListener('load', onIframeLoad);
+    }
+  }, 5000);
 }
 
 document.getElementById('email-input').addEventListener('keydown', e => {
