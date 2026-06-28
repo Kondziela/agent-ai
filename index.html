@@ -21,9 +21,7 @@
 html { scroll-behavior: smooth; }
 body {
   font-family: 'Urbanist', sans-serif;
-  background: linear-gradient(rgba(250,250,247,0.05), rgba(250,250,247,0.05)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80');
-  background-size: cover;
-  background-position: center;
+  background: var(--cream);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
 }
@@ -89,8 +87,15 @@ nav {
 }
 .btn-primary:hover { background: var(--navy2); transform: translateY(-1px); }
 .hero-note { margin-top: 14px; font-size: 13px; color: var(--muted); }
-.hero-image { position: relative; overflow: hidden; }
-.hero-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.hero-image {
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(rgba(250,250,247,0.06), rgba(250,250,247,0.06)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  align-self: stretch;
+}
+.hero-image img { display: none; }
 
 /* SCHEMAT */
 .how {
@@ -100,8 +105,11 @@ nav {
   background: var(--white);
   border-top: 1px solid var(--border);
 }
-.how-image { position: relative; overflow: hidden; background: var(--beige); }
-.how-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.how-image {
+  position: relative; overflow: hidden; background-size: cover; background-position: center;
+  align-self: stretch; background-image: linear-gradient(rgba(250,250,247,0.04), rgba(250,250,247,0.04)), url('https://images.unsplash.com/photo-1520975913737-1f8b8fb0b9d3?w=900&q=85');
+}
+.how-image img { display: none; }
 .how-content {
   display: flex; flex-direction: column; justify-content: center;
   padding: 80px 64px 80px 56px;
@@ -239,12 +247,12 @@ footer p { font-size: 12px; color: rgba(255,255,255,0.3); }
     <a href="#zapisz" class="btn-primary">Chcę wypróbować →</a>
     <p class="hero-note">Bezpłatny wczesny dostęp · Beta wkrótce</p>
   </div>
-  <div class="hero-image" style="background-image: linear-gradient(rgba(250,250,247,0.06), rgba(250,250,247,0.06)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&q=80'); background-size: cover; background-position: center; height: 320px;"></div>
+  <div class="hero-image" aria-hidden="true"></div>
 </section>
 
 <!-- SCHEMAT -->
 <section class="how" id="jak-dziala">
-  <div class="how-image" style="background-image: linear-gradient(rgba(250,250,247,0.04), rgba(250,250,247,0.04)), url('https://images.unsplash.com/photo-1520975913737-1f8b8fb0b9d3?w=900&q=85'); background-size: cover; background-position: center; height: 280px;" aria-hidden="true"></div>
+  <div class="how-image" aria-hidden="true"></div>
   <div class="how-content">
     <div class="how-eyebrow">Jak to działa</div>
     <h2>Zbierz CV, zadzwoń tylko do kogo chcesz.</h2>
