@@ -40,4 +40,45 @@
 
   <p>Aktualizacja polityki: 2026</p>
 </body>
+<script>
+// Preserve query params on internal links
+(function() {
+  const qs = window.location.search;
+  if (!qs) return;
+  document.querySelectorAll('a[href]').forEach(function(a) {
+    const href = a.getAttribute('href');
+    if (href && !href.startsWith('http') && !href.startsWith('mailto') && !href.startsWith('#')) {
+      a.href = href + qs;
+    }
+  });
+})();
+
+// Track page view
+(function() {
+  const pageViewWebhookUrl = 'https://script.google.com/macros/s/AKfycbxOQizKVDzFQkU2uAno1UaSPSDAzgMC9F6erLPQii4BCq9Urn14nEx7vcz0JDuQx2iQHw/exec';
+  function getOrCreateSessionId() {
+    let id = sessionStorage.getItem('naiem_session_id');
+    if (!id) {
+      id = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      sessionStorage.setItem('naiem_session_id', id);
+    }
+    return id;
+  }
+  const params = new URLSearchParams(window.location.search);
+  const payload = {
+    sessionId: getOrCreateSessionId(),
+    page:      'privacy',
+    source:    params.get('source')   || '',
+    campaign:  params.get('campaign') || '',
+    timestamp: new Date().toISOString()
+  };
+  try {
+    fetch(pageViewWebhookUrl, {
+      method: 'POST',
+      keepalive: true,
+      body: JSON.stringify(payload)
+    });
+  } catch (e) { /* ignore */ }
+})();
+</script>
 </html>
